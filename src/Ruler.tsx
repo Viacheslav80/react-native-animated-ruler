@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  View,
-  Text,
-  TextInput,
-  Animated,
-  Dimensions,
-  ViewStyle
-} from 'react-native';
+import { SafeAreaView, View, Text, TextInput, Animated, Dimensions, ViewStyle } from 'react-native';
 
 const { width } = Dimensions.get('screen');
 const { height } = Dimensions.get('screen');
@@ -16,137 +8,137 @@ type Props = {
   /**
    * Container style
    */
-  style: ViewStyle;
+  style: ViewStyle,
 
   /**
    * Component's width
    */
-  width: number;
+  width: number,
 
   /**
    * Component's height
    */
-  height: number;
+  height: number,
 
   /**
    * Vertical mode
    */
-  vertical: boolean;
+  vertical: boolean,
 
   /**
    * Minimum value of the ruler
    */
-  minimum: number;
+  minimum: number,
 
   /**
    * Maximum value of the ruler
    */
-  maximum: number;
+  maximum: number,
 
   /**
    * Each segment's width
    */
-  segmentWidth: number;
+  segmentWidth: number,
 
   /**
    * Each segment's space
    */
-  segmentSpacing: number;
+  segmentSpacing: number,
 
   /**
    * Color of indicator
    */
-  indicatorColor: string;
+  indicatorColor: string,
 
   /**
    * Indicator's width
    */
-  indicatorWidth: number;
+  indicatorWidth: number,
 
   /**
    * Indicator's height
    */
-  indicatorHeight: number;
+  indicatorHeight: number,
 
   /**
    * Indicator's space from bottom
    */
-  indicatorBottom: number;
+  indicatorBottom: number,
 
   /**
    * Step
    */
-  step: number;
+  step: number,
 
   /**
    * Steps color
    */
-  stepColor: string;
+  stepColor: string,
 
   /**
    * Steps height
    */
-  stepHeight: number;
+  stepHeight: number,
 
   /**
    * Normal lines color
    */
-  normalColor: string;
+  normalColor: string,
 
   /**
    * Normal lines height
    */
-  normalHeight: number;
+  normalHeight: number,
 
   /**
    * Background color
    */
-  backgroundColor: string;
+  backgroundColor: string,
 
   /**
    * Number's font family
    */
-  numberFontFamily: string;
+  numberFontFamily: string,
 
   /**
    * Number's size
    */
-  numberSize: number;
+  numberSize: number,
 
   /**
    * Number's color
    */
-  numberColor: string;
+  numberColor: string,
 
   /**
    * Unit
    */
-  unit: string;
+  unit: string,
 
   /**
    * Unit's space from bottom
    */
-  unitBottom: number;
+  unitBottom: number,
 
   /**
    * Unit's font family
    */
-  unitFontFamily: string;
+  unitFontFamily: string,
 
   /**
    * Unit's color
    */
-  unitColor: string;
+  unitColor: string,
 
   /**
    * Unit's size
    */
-  unitSize: number;
+  unitSize: number,
 
   /**
    * On value change
    */
-  onChangeValue: Function;
+  onChangeValue: Function,
 };
 
 class Ruler extends React.Component<Props> {
@@ -155,7 +147,7 @@ class Ruler extends React.Component<Props> {
 
     this.state = {
       scrollX: new Animated.Value(0),
-      value: 0
+      value: 0,
     };
 
     // References
@@ -166,9 +158,7 @@ class Ruler extends React.Component<Props> {
     this.snapSegment = props.segmentWidth + props.segmentSpacing;
     this.spacerWidth = (props.width - props.segmentWidth) / 2;
     this.rulerWidth =
-      props.width -
-      props.segmentWidth +
-      (props.maximum - props.minimum) * this.snapSegment;
+      props.width - props.segmentWidth + (props.maximum - props.minimum) * this.snapSegment;
   }
 
   componentDidMount() {
@@ -178,14 +168,21 @@ class Ruler extends React.Component<Props> {
     this.scrollListener = this.state.scrollX.addListener(({ value }) => {
       if (this.textInputRef && this.textInputRef.current) {
         this.textInputRef.current.setNativeProps({
-          text: `${Math.round(value / this.snapSegment) + minimum}`
+          text: `${Math.round(value / this.snapSegment) + minimum}`,
         });
 
         this.setState({
-          value: Math.round(value / this.snapSegment) + minimum
+          value: Math.round(value / this.snapSegment) + minimum,
         });
       }
     });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.maximum !== this.props.maximum) {
+      this.rulerWidth =
+        this.props.width - this.props.segmentWidth + (this.props.maximum - this.props.minimum) * this.snapSegment;
+    }
   }
 
   componentWillUnmount() {
@@ -203,11 +200,11 @@ class Ruler extends React.Component<Props> {
       stepColor,
       stepHeight,
       normalColor,
-      normalHeight
+      normalHeight,
     } = this.props;
 
     // Create an array to make a ruler
-    const data = [...Array(maximum - minimum + 1).keys()].map(i => i + minimum);
+    const data = [...Array(maximum - minimum + 1).keys()].map((i) => i + minimum);
 
     return (
       <View
@@ -215,18 +212,18 @@ class Ruler extends React.Component<Props> {
           width: this.rulerWidth,
           flexDirection: 'row',
           justifyContent: 'flex-start',
-          alignItems: 'flex-end'
+          alignItems: 'flex-end',
         }}
       >
         {/* Spacer */}
         <View
           style={{
-            width: this.spacerWidth
+            width: this.spacerWidth,
           }}
         />
 
         {/* Ruler */}
-        {data.map(i => {
+        {data.map((i) => {
           return (
             <View
               key={i}
@@ -234,7 +231,7 @@ class Ruler extends React.Component<Props> {
                 backgroundColor: i % step === 0 ? stepColor : normalColor,
                 height: i % step === 0 ? stepHeight : normalHeight,
                 width: segmentWidth,
-                marginRight: segmentSpacing
+                marginRight: segmentSpacing,
               }}
             />
           );
@@ -243,12 +240,12 @@ class Ruler extends React.Component<Props> {
         {/* Spacer */}
         <View
           style={{
-            width: this.spacerWidth
+            width: this.spacerWidth,
           }}
         />
       </View>
     );
-  }
+  };
 
   render() {
     const {
@@ -271,7 +268,7 @@ class Ruler extends React.Component<Props> {
       width,
       height,
       vertical,
-      onChangeValue
+      onChangeValue,
     } = this.props;
 
     return (
@@ -283,15 +280,15 @@ class Ruler extends React.Component<Props> {
             height,
             backgroundColor,
             position: 'relative',
-            transform: vertical ? [{ rotate: '90deg' }] : undefined
-          }
+            transform: vertical ? [{ rotate: '90deg' }] : undefined,
+          },
         ]}
       >
         <Animated.ScrollView
           ref={this.scrollViewRef}
           horizontal
           contentContainerStyle={{
-            justifyContent: 'flex-end'
+            justifyContent: 'flex-end',
           }}
           bounces={false}
           showsHorizontalScrollIndicator={false}
@@ -301,11 +298,11 @@ class Ruler extends React.Component<Props> {
             [
               {
                 nativeEvent: {
-                  contentOffset: { x: this.state.scrollX }
-                }
-              }
+                  contentOffset: { x: this.state.scrollX },
+                },
+              },
             ],
-            { useNativeDriver: true }
+            { useNativeDriver: true },
           )}
           onMomentumScrollEnd={() => onChangeValue(this.state.value)}
         >
@@ -320,16 +317,16 @@ class Ruler extends React.Component<Props> {
             alignItems: 'center',
             position: 'absolute',
             bottom: indicatorBottom,
-            left: (width - indicatorWidth) / 2
+            left: (width - indicatorWidth) / 2,
           }}
-          pointerEvents='none'
+          pointerEvents="none"
         >
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'flex-end',
-              transform: vertical ? [{ rotate: '-90deg' }] : undefined
+              transform: vertical ? [{ rotate: '-90deg' }] : undefined,
             }}
           >
             {/* Number */}
@@ -338,7 +335,7 @@ class Ruler extends React.Component<Props> {
               style={{
                 fontSize: numberSize,
                 fontFamily: numberFontFamily,
-                color: numberColor
+                color: numberColor,
               }}
               defaultValue={minimum.toString()}
             />
@@ -349,7 +346,7 @@ class Ruler extends React.Component<Props> {
                 marginBottom: unitBottom,
                 fontSize: unitSize,
                 fontFamily: unitFontFamily,
-                color: unitColor
+                color: unitColor,
               }}
             >
               {unit}
@@ -361,7 +358,7 @@ class Ruler extends React.Component<Props> {
             style={{
               height: indicatorHeight,
               backgroundColor: indicatorColor,
-              width: segmentWidth
+              width: segmentWidth,
             }}
           />
         </View>
@@ -397,7 +394,7 @@ Ruler.defaultProps = {
   unitBottom: height * 0.027,
   unitFontFamily: 'System',
   unitColor: '#888888',
-  unitSize: 16
+  unitSize: 16,
 };
 
 export default Ruler;
